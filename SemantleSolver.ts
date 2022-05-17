@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer');
-const thesaurus = require("thesaurus");
+const thesaurus = require("thesaurus")
+const word2vec = require("word2vec")
 
 const startingWord = "love";
 
@@ -9,12 +10,12 @@ let wordsToThesaurize = [];
 
 async function solve() {
   const browser = await puppeteer.launch({ headless: false });
-  const page = await browser.newPage();
-  await page.goto("https://semantle.novalis.org");
+  const [page] = await browser.pages();
+  await page.goto("https://semantle.com");
   await page.waitForTimeout(100);
   let guessButton = await page.waitForSelector("#guess-btn");
   let input = await page.waitForSelector("#guess");
-  await page.click('#rules-close');
+  await page.evaluate(()=>(document.querySelector('#rules-close') as HTMLElement).click())
   await page.waitForTimeout(500);
 
   let finalDialogBox = await page.waitForSelector("#response");
@@ -23,7 +24,6 @@ async function solve() {
 
     // Guess word
     let nextWord = nextWords.pop();
-    // console.log(nextWord);
     guessedWords.add(nextWord);
     await input.type(nextWord);
     await page.waitForTimeout(10);
@@ -31,6 +31,18 @@ async function solve() {
     await page.waitForTimeout(50);
 
     // Add the guessed word to wordsToThesaurize
+    // let table = await page.waitForSelector("#guesses > tbody > tr > td(2)")
+    // const data = await page.$$eval('table tr td', tds => tds.map((td) => {
+    //   return td.innerText;
+    // }));
+    // const data = await page.$$eval('table tr td', rows => {
+    //   return Array.from(rows, row => {
+    //     const columns = (row as Document).querySelectorAll('td');
+    //     return Array.from(columns, column => column.innerText);
+    //   });
+    // });
+    // console.log(data)
+
     let guessedWordElement = await page.waitForSelector("#guesses > tbody > tr > td:nth-child(2)");
     let guessedWord = await (await guessedWordElement.getProperty('textContent'))._remoteObject.value;
     if (nextWord == guessedWord) { // If the word is a valid, accepted word

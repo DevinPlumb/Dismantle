@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "puppeteer": "^13.7.0",
+    "thesaurus": "^0.0.1",
+    "word2vec": "^1.1.5"
+  },
+  "devDependencies": {
+    "@types/puppeteer": "^5.4.6"
+  }
+}
