@@ -1,4 +1,5 @@
 import { BUTTON, INDEX, INPUT, RULES_CLOSE, SAME, SIMILARITY_COLUMN, TEXT, URL } from "./constants";
+const puppeteer = require('puppeteer');
 
 abstract class Semantle {
 

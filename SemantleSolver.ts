@@ -1,6 +1,5 @@
 const puppeteer = require('puppeteer');
-const thesaurus = require("thesaurus")
-const word2vec = require("word2vec")
+const thesaurus = require("thesaurus");
 
 const startingWord = "love";
 
@@ -29,19 +28,6 @@ async function solve() {
     await page.waitForTimeout(10);
     await guessButton.click();
     await page.waitForTimeout(50);
-
-    // Add the guessed word to wordsToThesaurize
-    // let table = await page.waitForSelector("#guesses > tbody > tr > td(2)")
-    // const data = await page.$$eval('table tr td', tds => tds.map((td) => {
-    //   return td.innerText;
-    // }));
-    // const data = await page.$$eval('table tr td', rows => {
-    //   return Array.from(rows, row => {
-    //     const columns = (row as Document).querySelectorAll('td');
-    //     return Array.from(columns, column => column.innerText);
-    //   });
-    // });
-    // console.log(data)
 
     let guessedWordElement = await page.waitForSelector("#guesses > tbody > tr > td:nth-child(2)");
     let guessedWord = await (await guessedWordElement.getProperty('textContent'))._remoteObject.value;
